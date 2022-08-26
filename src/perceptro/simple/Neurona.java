@@ -2,6 +2,7 @@
 package perceptro.simple;
 
 import java.util.Scanner;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 public class Neurona {
@@ -9,7 +10,7 @@ public class Neurona {
     private int aprendizaje[]=new int[4];
     private double peso[]=new double[2];
     
-    public void entrenar(double teta,double alfa,double peso1,double peso2,int entradas[][],int resultados[]){
+    public void entrenar(double teta,double alfa,double peso1,double peso2,int entradas[][],int resultados[],JTextArea area){
         Scanner entrada=new Scanner(System.in);
         
         peso[0]=peso1;
@@ -31,30 +32,31 @@ public class Neurona {
         }
         int cont=0,activacion,error,num=1;
         while(cont!=resultados.length){
-            System.out.println("******************");
-            System.out.println("Iteracion "+num);
-            System.out.println("******************");
+            area.append("----------------------\n");
+            area.append("******************\n");
+            area.append("Iteracion "+num+"\n");
+            area.append("******************\n");
             nodos[cont].setPeso1(peso[0]);
             nodos[cont].setPeso2(peso[1]);
             nodos[cont].setTeta(teta);
             nodos[cont].setLambda(alfa);
             
-            System.out.println("Valor Esperado "+resultado[cont]);
-            System.out.println("input 1 "+nodos[cont].getInput1());
-            System.out.println("input 2 "+nodos[cont].getInput2());
-            System.out.println("Peso 1 "+nodos[cont].getPeso1());
-            System.out.println("Peso 2 "+nodos[cont].getPeso2());
-            System.out.println("Lambda "+nodos[cont].getLambda());
-            System.out.println("Teta "+nodos[cont].getTeta());
-            System.out.println("z: "+nodos[cont].calcularZ());
+            area.append("Valor Esperado "+resultado[cont]+"\n");
+            area.append("input 1 "+nodos[cont].getInput1()+"\n");
+            area.append("input 2 "+nodos[cont].getInput2()+"\n");
+            area.append("Peso 1 "+nodos[cont].getPeso1()+"\n");
+            area.append("Peso 2 "+nodos[cont].getPeso2()+"\n");
+            area.append("Lambda "+nodos[cont].getLambda()+"\n");
+            area.append("Teta "+nodos[cont].getTeta()+"\n");
+            area.append("z: "+nodos[cont].calcularZ()+"\n");
             activacion=nodos[cont].funcionActivacionSigmoid();
-            System.out.println("Funcion de Activacion Sigmoid: "+activacion);
-            System.out.println("----------------------------------");
+            area.append("Funcion de Activacion Sigmoid: "+activacion+"\n");
+            area.append("----------------------------------"+"\n");
             activacionValores[cont]=nodos[cont].getActivacion();
             aprendizaje[cont]=nodos[cont].funcionActivacionSigmoid();
             if(nodos[cont].funcionActivacionSigmoid()!=resultado[cont]){
-                System.out.println("Reiniciar Proceso");
-                System.out.println("");
+                area.append("Reiniciar Proceso"+"\n");
+                area.append(""+"\n");
                 nodos[cont].setError(resultado[cont],nodos[cont].funcionActivacionSigmoid());
                 nodos[cont].ajustarTeta();
                 teta=nodos[cont].getTeta();
@@ -67,7 +69,7 @@ public class Neurona {
                 cont=0;
                 num=0;
             }else{
-                System.out.println(activacion);
+                //System.out.println(activacion);
                 cont++;
             }
             num++;

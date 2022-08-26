@@ -124,6 +124,4 @@ public class Entrada {
     public double getActivacion(){
         return 1/(1+Math.pow(Math.E,-calcularZ()));
     }
-    
-    
 }

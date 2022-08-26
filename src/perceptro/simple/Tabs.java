@@ -32,8 +32,10 @@ public class Tabs {
     private JTextField valorFinal4;
     private JTextField pesoAprendizaje1;
     private JTextField pesoAprendizaje2;
-    private JButton entrenar;
+    private JButton entrenar,verEntreno;
     private String titulo,valores[],eti;
+    private JTextArea area;
+    private JFrame ventanaEmergente;
     /*public Principal(){
         this.setTitle("Perceptron Simple - Funcion Sigmoide");
         this.setSize(500,550);
@@ -52,7 +54,9 @@ public class Tabs {
     }
     public void iniciarComponentes(){
         //this.panel=panel;
+        
         paneles();
+        areas();
         etiquetas();
         camposVariables();
         camposTabla();
@@ -219,14 +223,18 @@ public class Tabs {
     
     public void botones(){
         entrenar=new JButton("Entrenar");
-        entrenar.setBounds(190,420,100,25);
+        entrenar.setBounds(120,420,100,25);
         panel.add(entrenar);
+        verEntreno=new JButton("Ver Entreno");
+        verEntreno.setBounds(240,420,110,25);
+        panel.add(verEntreno);
     }
     
     public void accionEntrenar(){
         Neurona start=new Neurona();
 
         entrenar.addActionListener(e->{
+            area.removeAll();
             int entrada[][]=new int[4][2];
             int resultados[]=new int[4];
             resultados[0]=Integer.parseInt(campo9.getText());
@@ -247,15 +255,35 @@ public class Tabs {
             Peso1=Double.parseDouble(w1.getText());
             Peso2=Double.parseDouble(w2.getText());
             Teta=Double.parseDouble(teta.getText());
-            start.entrenar(Teta, Lambda, Peso1, Peso2, entrada, resultados);
+            start.entrenar(Teta, Lambda, Peso1, Peso2, entrada, resultados,area);
             start.llenarCampos(activacion1, activacion2, activacion3, activacion4);
             start.llenarFinal(valorFinal1, valorFinal2, valorFinal3, valorFinal4);
             start.pesoIdeales(pesoAprendizaje1,pesoAprendizaje2);
+        });
+        
+        verEntreno.addActionListener(e->{
+            ventanaEmergente.setVisible(true);
         });
         
     }
     
     public JPanel getPanel(){
         return panel;
+    }
+    
+    public void areas(){
+        JScrollPane scrol=new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        ventanaEmergente=new JFrame();
+        ventanaEmergente.setTitle("Entreno");
+        ventanaEmergente.setLocationRelativeTo(null);
+        ventanaEmergente.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+        ventanaEmergente.setVisible(false);
+        ventanaEmergente.setSize(360,380);
+        ventanaEmergente.getContentPane().add(scrol);
+        //scrol.setBounds(40, 20, 400, 400);
+        area=new JTextArea();
+        //area.setBounds(0,0,380,380);
+        area.setVisible(true);
+        scrol.setViewportView(area);
     }
 }
